@@ -10,7 +10,7 @@ import (
 
 
 func handler(w http.ResponseWriter, r *http.Request) {
-    cmd:= exec.Command("grep", "ya")
+    cmd:= exec.Command("cat")
     
     cmd.Stdin = r.Body
     
@@ -21,7 +21,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
     
     
     result,_ := ioutil.ReadAll(stdout)
-    fmt.Fprintf(w, "%s", result);
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    fmt.Fprintf(w, "%s", result)
 }
 
 func main() {
