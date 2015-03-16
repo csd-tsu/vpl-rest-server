@@ -64,9 +64,9 @@ func main() {
         http.HandleFunc(line.UrlPattern, CreateHandler(line))
     }
 
+    log.Println("Running...")
     err = http.ListenAndServe(":8080", nil);
     if (err != nil){
         log.Fatal(err);
     }
-    log.Println("Running...")
 }
