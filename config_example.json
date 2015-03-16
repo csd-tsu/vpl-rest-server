@@ -1,0 +1,12 @@
+[
+    {
+        "UrlPattern": "/mikefilonov/ya",
+        "Executable": "grep",
+        "Argument": "ya"
+    },
+    {
+        "UrlPattern": "/mikefilonov/stub",
+        "Executable": "python",
+        "Argument": "/home/mikefilonov/vpl-stub-driver-py/driver.py"
+    }
+]
