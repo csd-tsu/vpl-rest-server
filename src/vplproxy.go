@@ -21,13 +21,26 @@ func CreateHandler(config HandlerConfigLine) func(http.ResponseWriter,*http.Requ
     log.Println("Registering ", config.Executable, config.Argument);
 
     return func(w http.ResponseWriter, r *http.Request) {
+        log.Println("New request to ", config.Executable, config.Argument)
+
         cmd:= exec.Command(config.Executable, config.Argument)
     
         cmd.Stdin = r.Body
         stdout,_ := cmd.StdoutPipe()
+        stderr,_ := cmd.StderrPipe()
         cmd.Start()
-    
+
         result, _ := ioutil.ReadAll(stdout)
+        resulterr, _ := ioutil.ReadAll(stderr)
+
+        cmd.Wait()
+
+        if (!cmd.ProcessState.Success()) {
+            log.Printf("Request failed: %s", resulterr);
+            w.WriteHeader(http.StatusBadRequest)
+            result = resulterr
+        }
+ 
         w.Header().Set("Access-Control-Allow-Origin", "*")
         fmt.Fprintf(w, "%s", result)
     }
